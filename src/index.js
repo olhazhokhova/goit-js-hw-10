@@ -14,6 +14,8 @@ const refs = {
 refs.inputRef.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput() {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
   fetch(refs.inputRef.value).then(data => {
     if (data.length > 10) {
       Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
@@ -29,9 +31,7 @@ function renderSeveralCountriesMarkup(data) {
   const markup = data
     .map(({ flags, name }) => `<li><img src="${flags.svg}"/> ${name.official}</li>`)
     .join('');
-
   refs.countryList.innerHTML = markup;
-  refs.countryInfo.innerHTML = '';
 }
 
 function renderOneCountryMarkup({ flags, name, capital, population, languages }) {
