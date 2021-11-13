@@ -5,14 +5,16 @@ import fetch from './api/fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
-const inputRef = document.querySelector('#search-box');
-const countryList = document.querySelector('.country-list');
-const countryInfo = document.querySelector('.country-info');
+const refs = {
+  inputRef: document.querySelector('#search-box'),
+  countryList: document.querySelector('.country-list'),
+  countryInfo: document.querySelector('.country-info'),
+};
 
-inputRef.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
+refs.inputRef.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput() {
-  fetch(inputRef.value).then(data => {
+  fetch(refs.inputRef.value).then(data => {
     if (data.length > 10) {
       Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
     } else if (data.length >= 2 && data.length <= 10) {
@@ -28,13 +30,13 @@ function renderSeveralCountriesMarkup(data) {
     .map(({ flags, name }) => `<li><img src="${flags.svg}"/> ${name.official}</li>`)
     .join('');
 
-  countryList.innerHTML = markup;
-  countryInfo.innerHTML = '';
+  refs.countryList.innerHTML = markup;
+  refs.countryInfo.innerHTML = '';
 }
 
 function renderOneCountryMarkup({ flags, name, capital, population, languages }) {
-  countryList.innerHTML = `<li><img src="${flags.svg}"/> ${name.official}</li>`;
-  countryInfo.innerHTML = `
+  refs.countryList.innerHTML = `<li><img src="${flags.svg}"/> ${name.official}</li>`;
+  refs.countryInfo.innerHTML = `
     <ul>
         <li><strong>Capital:</strong> ${capital}</li>
         <li><strong>Population:</strong> ${population}</li>
